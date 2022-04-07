@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-04-07T18:34:07.578Z" agent="5.0 (Windows)" etag="dlOLG9yMRp_kv1xg_T3z" version="17.4.0" type="github">
+<mxfile host="app.diagrams.net" modified="2022-04-07T18:35:45.353Z" agent="5.0 (Windows)" etag="DJo2V_eJtxGzQsv9pD9H" version="17.4.0" type="github">
   <diagram id="8Tfk1a2E-vzeWcCN6WrC" name="Page-1">
-    <mxGraphModel dx="1193" dy="936" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1014" dy="796" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -87,7 +87,7 @@
         <mxCell id="gsxGNT-Q6Tg2QTOzIp0n-6" value="" style="line;strokeWidth=1;html=1;" vertex="1" parent="-CWoF9AT7W6PvRubvj4s-45">
           <mxGeometry y="50" width="160" height="10" as="geometry" />
         </mxCell>
-        <mxCell id="gsxGNT-Q6Tg2QTOzIp0n-9" value="+ setTimer(time)&#xa;+ toggleTimer()&#xa;+ startTimer()&#xa;+ pauseTimer()&#xa;+ stopTimer()&#xa;+ resetTimer()&#xa;+ timeLeft(): time&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="-CWoF9AT7W6PvRubvj4s-45">
+        <mxCell id="gsxGNT-Q6Tg2QTOzIp0n-9" value="+ setTimer(time)&#xa;+ toggleTimer()&#xa;+ startTimer()&#xa;+ pauseTimer()&#xa;+ stopTimer()&#xa;+ resetTimer()&#xa;+ timeLeft(): time&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=none;" vertex="1" parent="-CWoF9AT7W6PvRubvj4s-45">
           <mxGeometry y="60" width="160" height="114" as="geometry" />
         </mxCell>
         <mxCell id="-CWoF9AT7W6PvRubvj4s-49" value="" style="endArrow=block;endSize=16;endFill=0;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="-CWoF9AT7W6PvRubvj4s-45" target="-CWoF9AT7W6PvRubvj4s-30" edge="1">
