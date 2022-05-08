@@ -9,35 +9,31 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-        //////////////////////////////table with id///////////////////
-        val textYamlTable = arrayOf(
-            "bieganie",
-            "gotowanie",
-            "pływanie",
-            "umieranie",
-            "bieganie",
-            "gotowanie",
-            "pływanie",
-            "umieranie",
-            "bieganie",
-            "gotowanie",
-            "pływanie",
-            "umieranie",
-            "umieranie",
-            "bieganie",
-            "gotowanie",
-            "pływanie",
-            "umieranie"
-        )
+        val jsonString = """
+            {
+                "buttons": [
+                    "first button",
+                    "second button",
+                    "third button"
+                ]
+            }
+        """.trimIndent()
+        val jObject = JSONObject(jsonString)
+        val jArray = jObject.getJSONArray("buttons")
+
+        val textYamlTable = mutableListOf<String>()
+        for (i in 0 until jArray.length()) {
+            textYamlTable += jArray.getString(i)
+        }
 
         /////////////////////creating buttons///////////////////////////
         setContentView(R.layout.activity_main)
@@ -84,8 +80,3 @@ class MainActivity : AppCompatActivity() {
         setContentView(scrollView)
     }
 }
-
-
-
-
-
