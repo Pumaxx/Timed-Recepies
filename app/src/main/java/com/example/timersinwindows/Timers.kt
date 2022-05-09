@@ -4,12 +4,12 @@ import android.os.CountDownTimer
 
 class Timers {
     lateinit var countdown_timer: CountDownTimer
-    var currentTime: String ="10"
-    var timeInMiliSeconds = 0L
+    var timeInMilliSeconds = 0L
+        private set
     var isRunning: Boolean = false
 
     fun pauseTimer() {
-        if(isRunning)
+        if (isRunning)
             countdown_timer.cancel()
     }
 
@@ -20,22 +20,24 @@ class Timers {
             }
 
             override fun onTick(p0: Long) {
-                timeInMiliSeconds = p0
-                updateTextUI()
+                timeInMilliSeconds = p0
             }
         }
         isRunning = true
         countdown_timer.start()
     }
 
-     fun updateTextUI() {
-        val minute = (timeInMiliSeconds / 1000) / 60
-        val seconds = (timeInMiliSeconds / 1000) % 60
+    fun getTimeString(): String {
+        val minutes = (timeInMilliSeconds / 1000) / 60
+        val seconds = (timeInMilliSeconds / 1000) % 60
 
-        if(seconds<10)
-            currentTime = "$minute:0$seconds"
-        else
-            currentTime= "$minute:$seconds"
+        if (seconds < 10)
+            return "$minutes:0$seconds"
+        return "$minutes:$seconds"
+    }
+
+    fun setupTimer(startTime: Long) {
+        timeInMilliSeconds = startTime
     }
 }
 
