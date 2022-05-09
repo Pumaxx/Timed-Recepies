@@ -6,35 +6,36 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.timer_content.view.*
 
-class TimerAdapter (private val  timersList: MutableList<Timers>
+class TimerAdapter(private val timersList: MutableList<Timers>
 ) : RecyclerView.Adapter<TimerAdapter.TimerViewHolder>() {
 
     class TimerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimerViewHolder {
         return TimerViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.timer_content,
-                parent,
-                false
-            )
+                LayoutInflater.from(parent.context).inflate(
+                        R.layout.timer_content,
+                        parent,
+                        false
+                )
         )
     }
 
     override fun onBindViewHolder(holder: TimerViewHolder, position: Int) {
+
         val currentTimer = timersList[position]
         holder.itemView.apply {
-            tvTime.text = currentTimer.currentTime
-            currentTimer.timeInMiliSeconds = currentTimer.currentTime.toLong() *1000L
+            tvTime.text = currentTimer.getTimeString()
+            currentTimer.setupTimer(10000L)
 
             btStart.setOnClickListener {
-                currentTimer.startTimer(currentTimer.timeInMiliSeconds)
-                tvTime.text = currentTimer.currentTime
+                currentTimer.startTimer(currentTimer.timeInMilliSeconds)
+                tvTime.text = currentTimer.getTimeString()
             }
 
             btPause.setOnClickListener {
                 currentTimer.pauseTimer()
-                tvTime.text = currentTimer.currentTime
+                tvTime.text = currentTimer.getTimeString()
             }
 
             btEdit.setOnClickListener {
@@ -44,18 +45,17 @@ class TimerAdapter (private val  timersList: MutableList<Timers>
                 btDelete.visibility = View.INVISIBLE
                 btSet.visibility = View.VISIBLE
                 etTimeToSet.visibility = View.VISIBLE
-
                 btEdit.visibility = View.INVISIBLE
             }
 
             btSet.setOnClickListener {
-                currentTimer.currentTime = etTimeToSet.text.toString()
+                // TODO poprawic przypisywanie wartosci przy edit
+                if (etTimeToSet.text.toString().isEmpty())
+                    currentTimer.setupTimer(10 * 1000L)
+                else
+                    currentTimer.setupTimer(etTimeToSet.toString().toLong() * 1000L)
 
-                if(currentTimer.currentTime.isEmpty())
-                    currentTimer.currentTime = "10"
-
-                currentTimer.timeInMiliSeconds = currentTimer.currentTime.toLong() *1000L
-                tvTime.text = currentTimer.currentTime
+                tvTime.text = currentTimer.getTimeString()
 
                 btStart.visibility = View.VISIBLE
                 btPause.visibility = View.VISIBLE
@@ -63,7 +63,6 @@ class TimerAdapter (private val  timersList: MutableList<Timers>
                 btEdit.visibility = View.VISIBLE
                 btDelete.visibility = View.VISIBLE
                 etTimeToSet.visibility = View.INVISIBLE
-
                 btSet.visibility = View.INVISIBLE
             }
 
