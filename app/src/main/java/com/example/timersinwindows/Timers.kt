@@ -6,14 +6,17 @@ class Timers {
     lateinit var countdown_timer: CountDownTimer
     var currentTime: String ="10"
     var timeInMiliSeconds = 0L
+    var isRunning: Boolean = false
 
     fun pauseTimer() {
-        countdown_timer.cancel()
+        if(isRunning)
+            countdown_timer.cancel()
     }
 
     fun startTimer(time_in_seconds: Long) {
         countdown_timer = object : CountDownTimer(time_in_seconds, 1000) {
             override fun onFinish() {
+                isRunning = false
             }
 
             override fun onTick(p0: Long) {
@@ -21,6 +24,7 @@ class Timers {
                 updateTextUI()
             }
         }
+        isRunning = true
         countdown_timer.start()
     }
 
