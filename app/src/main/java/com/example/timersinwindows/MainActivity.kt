@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
         rvTimersContainer.layoutManager = LinearLayoutManager(this)
 
         btAddNewTimer.setOnClickListener {
-            val
             val timer = Timers()
             timerAdapter.addTimer(timer)
         }

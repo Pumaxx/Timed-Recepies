@@ -4,19 +4,23 @@ import android.os.CountDownTimer
 
 class Timers {
     lateinit var countdown_timer: CountDownTimer
-    var timeInMilliSeconds = 0L
+    var timeInMilliSeconds = 10000L
         private set
     var isRunning: Boolean = false
 
     fun pauseTimer() {
         if (isRunning)
             countdown_timer.cancel()
+        isRunning = false
     }
 
     fun startTimer(time_in_seconds: Long) {
+        if(isRunning)
+            return
         countdown_timer = object : CountDownTimer(time_in_seconds, 1000) {
             override fun onFinish() {
                 isRunning = false
+                timeInMilliSeconds = 0L
             }
 
             override fun onTick(p0: Long) {
