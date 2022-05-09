@@ -53,7 +53,7 @@ class TimerAdapter(private val timersList: MutableList<Timers>
                 if (etTimeToSet.text.toString().isEmpty())
                     currentTimer.setupTimer(10 * 1000L)
                 else
-                    currentTimer.setupTimer(etTimeToSet.toString().toLong() * 1000L)
+                    currentTimer.setupTimer(etTimeToSet.text.toString().toLong() * 1000L)
 
                 tvTime.text = currentTimer.getTimeString()
 
