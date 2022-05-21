@@ -1,5 +1,6 @@
 package com.example.timersinwindows
 
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ class TimerAdapter(private val timersList: MutableList<Timers>
     }
 
     override fun onBindViewHolder(holder: TimerViewHolder, position: Int) {
+        lateinit var countdownTimer: CountDownTimer
 
         val currentTimer = timersList[position]
         holder.itemView.apply {
@@ -29,13 +31,30 @@ class TimerAdapter(private val timersList: MutableList<Timers>
             currentTimer.setupTimer(10000L)
 
             btStart.setOnClickListener {
-                currentTimer.startTimer(currentTimer.timeInMilliSeconds)
                 tvTime.text = currentTimer.getTimeString()
+
+                if (!currentTimer.getIsRunning()) {
+                    countdownTimer = object : CountDownTimer(currentTimer.timeInMilliSeconds, 1000) {
+                            override fun onFinish() {
+                                currentTimer.setupTimer(0L)
+                                tvTime.text = currentTimer.getTimeString()
+                                currentTimer.setIsRunning(false)
+                            }
+
+                            override fun onTick(p0: Long) {
+                                currentTimer.setupTimer(p0)
+                                tvTime.text = currentTimer.getTimeString()
+                            }
+                        }
+                    currentTimer.setIsRunning(true)
+                    countdownTimer.start()
+                }
             }
 
             btPause.setOnClickListener {
-                currentTimer.pauseTimer()
-                tvTime.text = currentTimer.getTimeString()
+                if (currentTimer.getIsRunning())
+                    countdownTimer.cancel()
+                currentTimer.setIsRunning(false)
             }
 
             btEdit.setOnClickListener {
@@ -49,7 +68,6 @@ class TimerAdapter(private val timersList: MutableList<Timers>
             }
 
             btSet.setOnClickListener {
-                // TODO poprawic przypisywanie wartosci przy edit
                 if (etTimeToSet.text.toString().isEmpty())
                     currentTimer.setupTimer(10 * 1000L)
                 else
