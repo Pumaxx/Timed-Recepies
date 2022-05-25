@@ -1,13 +1,12 @@
 package com.example.timersinwindows
 
-import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.timer_content.view.*
 
-class TimerAdapter(private val timersList: MutableList<Timers>
+class TimerAdapter(val timersList: MutableList<Timers>
 ) : RecyclerView.Adapter<TimerAdapter.TimerViewHolder>() {
 
     class TimerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
@@ -23,64 +22,40 @@ class TimerAdapter(private val timersList: MutableList<Timers>
     }
 
     override fun onBindViewHolder(holder: TimerViewHolder, position: Int) {
-        lateinit var countdownTimer: CountDownTimer
 
         val currentTimer = timersList[position]
+
         holder.itemView.apply {
             tvTime.text = currentTimer.getTimeString()
-            currentTimer.setupTimer(10000L)
-
-            btStart.setOnClickListener {
-                tvTime.text = currentTimer.getTimeString()
-
-                if (!currentTimer.getIsRunning()) {
-                    countdownTimer = object : CountDownTimer(currentTimer.timeInMilliSeconds, 1000) {
-                            override fun onFinish() {
-                                currentTimer.setupTimer(0L)
-                                tvTime.text = currentTimer.getTimeString()
-                                currentTimer.setIsRunning(false)
-                            }
-
-                            override fun onTick(p0: Long) {
-                                currentTimer.setupTimer(p0)
-                                tvTime.text = currentTimer.getTimeString()
-                            }
-                        }
-                    currentTimer.setIsRunning(true)
-                    countdownTimer.start()
-                }
-            }
-
-            btPause.setOnClickListener {
-                if (currentTimer.getIsRunning())
-                    countdownTimer.cancel()
-                currentTimer.setIsRunning(false)
-            }
+            tvStepTitle.text = currentTimer.getStepTitle()
 
             btEdit.setOnClickListener {
-                btStart.visibility = View.INVISIBLE
-                btPause.visibility = View.INVISIBLE
                 tvTime.visibility = View.INVISIBLE
+                tvStepTitle.visibility = View.INVISIBLE
                 btDelete.visibility = View.INVISIBLE
                 btSet.visibility = View.VISIBLE
+                etTitleToSet.visibility = View.VISIBLE
                 etTimeToSet.visibility = View.VISIBLE
                 btEdit.visibility = View.INVISIBLE
             }
 
             btSet.setOnClickListener {
                 if (etTimeToSet.text.toString().isEmpty())
-                    currentTimer.setupTimer(10 * 1000L)
+                    currentTimer.setTimeInMilliSeconds(10 * 1000L)
                 else
-                    currentTimer.setupTimer(etTimeToSet.text.toString().toLong() * 1000L)
+                    currentTimer.setTimeInMilliSeconds(etTimeToSet.text.toString().toLong() * 1000L)
+
+                currentTimer.setStepTitle(etTitleToSet.text.toString())
 
                 tvTime.text = currentTimer.getTimeString()
+                tvStepTitle.text = currentTimer.getStepTitle()
 
-                btStart.visibility = View.VISIBLE
-                btPause.visibility = View.VISIBLE
                 tvTime.visibility = View.VISIBLE
+                tvStepTitle.visibility = View.VISIBLE
                 btEdit.visibility = View.VISIBLE
                 btDelete.visibility = View.VISIBLE
                 etTimeToSet.visibility = View.INVISIBLE
+                etTitleToSet.visibility = View.INVISIBLE
                 btSet.visibility = View.INVISIBLE
             }
 
@@ -98,5 +73,13 @@ class TimerAdapter(private val timersList: MutableList<Timers>
     fun addTimer(newTimer: Timers) {
         timersList.add(newTimer)
         notifyItemInserted(timersList.size - 1)
+    }
+
+    fun setEditVisible(){
+
+    }
+
+    fun setEditInvisible(){
+
     }
 }
