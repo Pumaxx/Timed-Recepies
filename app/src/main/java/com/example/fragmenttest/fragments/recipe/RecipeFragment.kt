@@ -26,7 +26,7 @@ class recipeFragment : Fragment() {
 
         timerAdapter = TimerAdapter(mutableListOf())
         rvTimersContainer.adapter = timerAdapter
-        rvTimersContainer.layoutManager = LinearLayoutManager(this)
+        rvTimersContainer.layoutManager = LinearLayoutManager(view.context)
 
         // mRecipeViewModel = ViewModelProvider(this).get(recipeViewModel::class.java)
 
