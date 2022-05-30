@@ -30,7 +30,7 @@ class recipeFragment : Fragment() {
         timerAdapter = TimerAdapter(mutableListOf())
         view.rvTimersContainer.adapter = timerAdapter
         view.rvTimersContainer.layoutManager = LinearLayoutManager(view.context)
-        
+
         // mRecipeViewModel = ViewModelProvider(this).get(recipeViewModel::class.java)
 
         val currentStep = 0
