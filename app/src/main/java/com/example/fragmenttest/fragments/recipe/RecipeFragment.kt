@@ -11,6 +11,9 @@ import android.os.CountDownTimer
 import com.example.timersinwindows.TimerAdapter
 import com.example.timersinwindows.Timers
 import kotlinx.android.synthetic.main.recipe_layout.*
+import kotlinx.android.synthetic.main.recipe_layout.view.*
+import kotlinx.android.synthetic.main.timer_content.view.*
+import kotlinx.android.synthetic.main.timer_content.view.btEdit
 
 class recipeFragment : Fragment() {
 
@@ -25,8 +28,8 @@ class recipeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_recipe, container, false)
 
         timerAdapter = TimerAdapter(mutableListOf())
-        rvTimersContainer.adapter = timerAdapter
-        rvTimersContainer.layoutManager = LinearLayoutManager(this)
+        view.rvTimersContainer.adapter = timerAdapter
+        view.rvTimersContainer.layoutManager = LinearLayoutManager(view.context)
 
         // mRecipeViewModel = ViewModelProvider(this).get(recipeViewModel::class.java)
 
@@ -38,12 +41,12 @@ class recipeFragment : Fragment() {
         var currentTimeValue= 0L
         var currentTitleValue = ""
 
-        btAddNewTimer.setOnClickListener {
+        view.btAddNewTimer.setOnClickListener {
             val timer = Timers()
             timerAdapter.addTimer(timer)
         }
 
-        btStartProcess.setOnClickListener {
+        view.btStartProcess.setOnClickListener {
             if(timerIsFinished) {
                 if(timerAdapter.timersList.isNotEmpty()){
                     val currentTimer = timerAdapter.timersList[currentStep]
@@ -87,7 +90,7 @@ class recipeFragment : Fragment() {
             }
         }
 
-        btPause.setOnClickListener {
+        view.btPause.setOnClickListener {
             timerIsRunning=false
             countdownTimer.cancel()
 
@@ -97,14 +100,15 @@ class recipeFragment : Fragment() {
             btEdit.visibility = View.VISIBLE
         }
 
-        btEdit.setOnClickListener {
+
+        view.btEdit.setOnClickListener {
             btStartProcess.visibility = View.INVISIBLE
             btEdit.visibility = View.INVISIBLE
             btAddNewTimer.visibility = View.VISIBLE
             btDone.visibility= View.VISIBLE
         }
 
-        btDone.setOnClickListener {
+        view.btDone.setOnClickListener {
             // insertDataToDatabase()
 
             btAddNewTimer.visibility = View.INVISIBLE
@@ -113,7 +117,7 @@ class recipeFragment : Fragment() {
             btEdit.visibility = View.VISIBLE
         }
 
-        btSkip.setOnClickListener {
+        view.btSkip.setOnClickListener {
             if(timerAdapter.timersList.isNotEmpty()){
                 countdownTimer.cancel()
                 timerIsFinished = true
@@ -135,7 +139,6 @@ class recipeFragment : Fragment() {
                 currentTimeValue= 0L
             }
         }
-
         return view
     }
     /*  private fun insertDataToDatabase() {
