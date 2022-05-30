@@ -4,10 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.timersinwindows.Timers
-import java.security.AccessControlContext
 
-@Database(entities = [Timers::class], version = 1, exportSchema = false)
+@Database(entities = [recipe::class], version = 1, exportSchema = false)
 abstract class recipeDataBase: RoomDatabase() {
 
     abstract fun recipeDao(): recipeDao
@@ -22,13 +20,13 @@ abstract class recipeDataBase: RoomDatabase() {
                 return tempIstance
             }
             synchronized(this){
-                val istance = Room.databaseBuilder(
+                val instance = Room.databaseBuilder(
                     context.applicationContext,
                     recipeDataBase::class.java,
                     "recipe_database"
                 ).build()
-                INSTANCE = istance
-                return  istance
+                INSTANCE = instance
+                return  instance
             }
         }
     }

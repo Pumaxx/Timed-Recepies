@@ -8,17 +8,19 @@ import android.view.ViewGroup
 import com.example.fragmenttest.R
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.os.CountDownTimer
+import androidx.lifecycle.ViewModelProvider
 import com.example.timersinwindows.TimerAdapter
 import com.example.timersinwindows.Timers
+import com.example.timersinwindows.data.recipe
+import com.example.timersinwindows.data.recipeViewModel
 import kotlinx.android.synthetic.main.recipe_layout.*
 import kotlinx.android.synthetic.main.recipe_layout.view.*
-import kotlinx.android.synthetic.main.timer_content.view.*
 import kotlinx.android.synthetic.main.timer_content.view.btEdit
 
 class recipeFragment : Fragment() {
 
     private lateinit var timerAdapter: TimerAdapter
-    //private lateinit var mRecipeViewModel : recipeViewModel
+    private lateinit var mRecipeViewModel : recipeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +33,7 @@ class recipeFragment : Fragment() {
         view.rvTimersContainer.adapter = timerAdapter
         view.rvTimersContainer.layoutManager = LinearLayoutManager(view.context)
 
-        // mRecipeViewModel = ViewModelProvider(this).get(recipeViewModel::class.java)
+        mRecipeViewModel = ViewModelProvider(this).get(recipeViewModel::class.java)
 
         val currentStep = 0
         var timerIsFinished = true
@@ -109,7 +111,7 @@ class recipeFragment : Fragment() {
         }
 
         view.btDone.setOnClickListener {
-            // insertDataToDatabase()
+           // insertDataToDatabase()
 
             btAddNewTimer.visibility = View.INVISIBLE
             btDone.visibility= View.INVISIBLE
@@ -141,7 +143,7 @@ class recipeFragment : Fragment() {
         }
         return view
     }
-    /*  private fun insertDataToDatabase() {
+    private fun insertDataToDatabase() {
       val dbCurrentStep = 0
       val dbStepTime: Int
       val dbStepTitle: String
@@ -152,7 +154,7 @@ class recipeFragment : Fragment() {
 
       val recipeStep = recipe(0,dbStepTime,dbStepTitle)
       mRecipeViewModel.addStep(recipeStep)
-  } */
+  }
 }
 
 fun getTimeString(currentTimeValue: Long): String {
