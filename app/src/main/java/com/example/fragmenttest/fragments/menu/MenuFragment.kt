@@ -6,10 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.fragmenttest.MenuElement
+import com.example.fragmenttest.MenuElementAdapter
 import com.example.fragmenttest.R
+import kotlinx.android.synthetic.main.fragment_menu.*
 import kotlinx.android.synthetic.main.fragment_menu.view.*
 
 class menuFragment : Fragment() {
+
+    private lateinit var menuElementAdapter: MenuElementAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -18,8 +24,14 @@ class menuFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_menu, container, false)
 
-        view.btMoveTo.setOnClickListener {
-            findNavController().navigate(R.id.action_menuFragment_to_recipeFragment)
+        menuElementAdapter = MenuElementAdapter(mutableListOf())
+        view.rvTMenuElementsContainer.adapter = menuElementAdapter
+        view.rvTMenuElementsContainer.layoutManager = LinearLayoutManager(view.context)
+
+        view.btAddNewRecipe.setOnClickListener {
+            //findNavController().navigate(R.id.action_menuFragment_to_recipeFragment)
+            val mElement = MenuElement()
+            menuElementAdapter.addMenuElement(mElement)
         }
 
         return view

@@ -25,6 +25,7 @@ class TimerAdapter(val timersList: MutableList<Timers>
     override fun onBindViewHolder(holder: TimerViewHolder, position: Int) {
 
         val currentTimer = timersList[position]
+        var isEditVisible = false
 
         holder.itemView.apply {
             tvTime.text = currentTimer.getTimeString()
@@ -33,11 +34,11 @@ class TimerAdapter(val timersList: MutableList<Timers>
             btEdit.setOnClickListener {
                 tvTime.visibility = View.INVISIBLE
                 tvStepTitle.visibility = View.INVISIBLE
-                btDelete.visibility = View.INVISIBLE
+                //btDelete.visibility = View.INVISIBLE
                 btSet.visibility = View.VISIBLE
                 etTitleToSet.visibility = View.VISIBLE
                 etTimeToSet.visibility = View.VISIBLE
-                btEdit.visibility = View.INVISIBLE
+                //btEdit.visibility = View.INVISIBLE
             }
 
             btSet.setOnClickListener {
@@ -53,8 +54,8 @@ class TimerAdapter(val timersList: MutableList<Timers>
 
                 tvTime.visibility = View.VISIBLE
                 tvStepTitle.visibility = View.VISIBLE
-                btEdit.visibility = View.VISIBLE
-                btDelete.visibility = View.VISIBLE
+                //btEdit.visibility = View.VISIBLE
+                //btDelete.visibility = View.VISIBLE
                 etTimeToSet.visibility = View.INVISIBLE
                 etTitleToSet.visibility = View.INVISIBLE
                 btSet.visibility = View.INVISIBLE

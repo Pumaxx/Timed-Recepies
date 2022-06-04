@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/recipeFragment"
         android:name="com.example.fragmenttest.fragments.recipe.recipeFragment"
-        android:label="Recipe title from menu"
+        android:label="Recipe"
         tools:layout="@layout/fragment_recipe" >
         <action
             android:id="@+id/action_recipeFragment_to_menuFragment"
