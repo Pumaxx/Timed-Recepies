@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/menuFragment"
         android:name="com.example.fragmenttest.fragments.menu.menuFragment"
-        android:label="Our App name"
+        android:label="Recipe Menager"
         tools:layout="@layout/fragment_menu" >
         <action
             android:id="@+id/action_menuFragment_to_recipeFragment"

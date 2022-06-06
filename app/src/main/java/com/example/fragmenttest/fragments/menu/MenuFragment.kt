@@ -27,13 +27,32 @@ class menuFragment : Fragment() {
         menuElementAdapter = MenuElementAdapter(mutableListOf())
         view.rvTMenuElementsContainer.adapter = menuElementAdapter
         view.rvTMenuElementsContainer.layoutManager = LinearLayoutManager(view.context)
-
+        startPreset()
         view.btAddNewRecipe.setOnClickListener {
-            //findNavController().navigate(R.id.action_menuFragment_to_recipeFragment)
             val mElement = MenuElement()
             menuElementAdapter.addMenuElement(mElement)
         }
 
         return view
+    }
+
+    fun startPreset() {
+        val preSetOne = MenuElement()
+        val preSetTwo = MenuElement()
+        val preSetThree = MenuElement()
+        val preSetFour = MenuElement()
+        val preSetFive = MenuElement()
+
+        preSetOne.setMenuRecipeTitle("Ciasto cioci Jadzi")
+        preSetTwo.setMenuRecipeTitle("Cardio #NieChcemAleMuszem")
+        preSetThree.setMenuRecipeTitle("Parówki z czajnika")
+        preSetFour.setMenuRecipeTitle("Americano z kawy rozpuszczalnej")
+        preSetFive.setMenuRecipeTitle("Bic lub nic")
+
+        menuElementAdapter.addMenuElement(preSetOne)
+        menuElementAdapter.addMenuElement(preSetTwo)
+        menuElementAdapter.addMenuElement(preSetThree)
+        menuElementAdapter.addMenuElement(preSetFour)
+        menuElementAdapter.addMenuElement(preSetFive)
     }
 }
