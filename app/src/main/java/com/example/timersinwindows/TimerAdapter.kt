@@ -7,24 +7,26 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fragmenttest.R
 import kotlinx.android.synthetic.main.timer_content.view.*
 
-class TimerAdapter(val timersList: MutableList<Timers>
+class TimerAdapter(
+    val timersList: MutableList<Timers>
 ) : RecyclerView.Adapter<TimerAdapter.TimerViewHolder>() {
 
     class TimerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimerViewHolder {
         return TimerViewHolder(
-                LayoutInflater.from(parent.context).inflate(
-                        R.layout.timer_content,
-                        parent,
-                        false
-                )
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.timer_content,
+                parent,
+                false
+            )
         )
     }
 
     override fun onBindViewHolder(holder: TimerViewHolder, position: Int) {
 
         val currentTimer = timersList[position]
+        //var isEditVisible = false
 
         holder.itemView.apply {
             tvTime.text = currentTimer.getTimeString()

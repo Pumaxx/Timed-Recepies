@@ -1,54 +1,61 @@
 package com.example.fragmenttest.fragments.recipe
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.fragmenttest.R
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import android.os.CountDownTimer
+import com.example.fragmenttest.R
+import com.example.fragmenttest.preset.Preset
 import com.example.timersinwindows.TimerAdapter
 import com.example.timersinwindows.Timers
-import kotlinx.android.synthetic.main.recipe_layout.*
-import kotlinx.android.synthetic.main.recipe_layout.view.*
-import kotlinx.android.synthetic.main.timer_content.view.*
-import kotlinx.android.synthetic.main.timer_content.view.btEdit
+import kotlinx.android.synthetic.main.fragment_recipe.*
+import kotlinx.android.synthetic.main.fragment_recipe.view.*
+import kotlinx.android.synthetic.main.recipe_layout.tvMainStepTitle
+import kotlinx.android.synthetic.main.recipe_layout.tvMainTime
+import kotlinx.android.synthetic.main.recipe_layout.view.rvTimersContainer
 
 class recipeFragment : Fragment() {
 
     private lateinit var timerAdapter: TimerAdapter
-    //private lateinit var mRecipeViewModel : recipeViewModel
+    private var presetList: List<Pair<String, Long>>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_recipe, container, false)
 
         timerAdapter = TimerAdapter(mutableListOf())
         view.rvTimersContainer.adapter = timerAdapter
         view.rvTimersContainer.layoutManager = LinearLayoutManager(view.context)
-        
-        // mRecipeViewModel = ViewModelProvider(this).get(recipeViewModel::class.java)
+
+        Log.d("id:", Preset.currentId.toString())
+        presetList = Preset.getCurrentPresetList()
+        Log.d("presetList:", presetList.toString())
+        if (presetList != null) {
+            loadPreset()
+        }
 
         val currentStep = 0
         var timerIsFinished = true
         var timerIsRunning = false
         lateinit var countdownTimer: CountDownTimer
 
-        var currentTimeValue= 0L
-        var currentTitleValue = ""
+        var currentTimeValue = 0L
+        var currentTitleValue: String
 
-        view.btAddNewTimer.setOnClickListener {
+        view.btRecipeAddNewTimer.setOnClickListener {
             val timer = Timers()
             timerAdapter.addTimer(timer)
         }
 
-        view.btStartProcess.setOnClickListener {
-            if(timerIsFinished) {
-                if(timerAdapter.timersList.isNotEmpty()){
+        view.btRecipeStartProcess.setOnClickListener {
+            if (timerIsFinished) {
+                if (timerAdapter.timersList.isNotEmpty()) {
                     val currentTimer = timerAdapter.timersList[currentStep]
 
                     currentTimeValue = currentTimer.getTimeInMilliSeconds()
@@ -61,24 +68,24 @@ class recipeFragment : Fragment() {
                     timerAdapter.notifyDataSetChanged()
                 }
             }
-            if(currentTimeValue > 0L){
+            if (currentTimeValue > 0L) {
 
                 timerIsRunning = true
                 timerIsFinished = false
 
-                btPause.visibility = View.VISIBLE
-                btSkip.visibility = View.VISIBLE
-                btStartProcess.visibility = View.INVISIBLE
-                btEdit.visibility = View.INVISIBLE
+                btRecipePause.visibility = View.VISIBLE
+                btRecipeSkip.visibility = View.VISIBLE
+                btRecipeStartProcess.visibility = View.INVISIBLE
+                btRecipeEdit.visibility = View.INVISIBLE
 
-                countdownTimer = object : CountDownTimer(currentTimeValue, 100){
+                countdownTimer = object : CountDownTimer(currentTimeValue, 100) {
                     override fun onFinish() {
                         tvMainStepTitle.text = ""
                         tvMainTime.text = "Done"
                         timerIsFinished = true
 
-                        if(timerAdapter.timersList.isNotEmpty())
-                            btStartProcess.callOnClick()
+                        if (timerAdapter.timersList.isNotEmpty())
+                            btRecipeStartProcess.callOnClick()
                     }
 
                     override fun onTick(p0: Long) {
@@ -90,77 +97,71 @@ class recipeFragment : Fragment() {
             }
         }
 
-        view.btPause.setOnClickListener {
-            timerIsRunning=false
+        view.btRecipePause.setOnClickListener {
+            timerIsRunning = false
             countdownTimer.cancel()
 
-            btPause.visibility = View.INVISIBLE
-            btSkip.visibility = View.INVISIBLE
-            btStartProcess.visibility = View.VISIBLE
-            btEdit.visibility = View.VISIBLE
+            btRecipePause.visibility = View.INVISIBLE
+            btRecipeSkip.visibility = View.INVISIBLE
+            btRecipeStartProcess.visibility = View.VISIBLE
+            btRecipeEdit.visibility = View.VISIBLE
         }
 
 
-        view.btEdit.setOnClickListener {
-            btStartProcess.visibility = View.INVISIBLE
-            btEdit.visibility = View.INVISIBLE
-            btAddNewTimer.visibility = View.VISIBLE
-            btDone.visibility= View.VISIBLE
+        view.btRecipeEdit.setOnClickListener {
+            btRecipeStartProcess.visibility = View.INVISIBLE
+            btRecipeEdit.visibility = View.INVISIBLE
+            btRecipeAddNewTimer.visibility = View.VISIBLE
+            btRecipeDone.visibility = View.VISIBLE
         }
 
-        view.btDone.setOnClickListener {
-            // insertDataToDatabase()
-
-            btAddNewTimer.visibility = View.INVISIBLE
-            btDone.visibility= View.INVISIBLE
-            btStartProcess.visibility = View.VISIBLE
-            btEdit.visibility = View.VISIBLE
+        view.btRecipeDone.setOnClickListener {
+            btRecipeAddNewTimer.visibility = View.INVISIBLE
+            btRecipeDone.visibility = View.INVISIBLE
+            btRecipeStartProcess.visibility = View.VISIBLE
+            btRecipeEdit.visibility = View.VISIBLE
         }
 
-        view.btSkip.setOnClickListener {
-            if(timerAdapter.timersList.isNotEmpty()){
+        view.btRecipeSkip.setOnClickListener {
+            if (timerAdapter.timersList.isNotEmpty()) {
                 countdownTimer.cancel()
                 timerIsFinished = true
-                btStartProcess.callOnClick()
-            }
-            else if (timerIsRunning){
-                timerIsRunning=false
+                btRecipeStartProcess.callOnClick()
+            } else if (timerIsRunning) {
+                timerIsRunning = false
                 timerIsFinished = true
                 countdownTimer.cancel()
 
                 tvMainStepTitle.text = ""
                 tvMainTime.text = "Done"
 
-                btPause.visibility = View.INVISIBLE
-                btSkip.visibility = View.INVISIBLE
-                btStartProcess.visibility = View.VISIBLE
-                btEdit.visibility = View.VISIBLE
+                btRecipePause.visibility = View.INVISIBLE
+                btRecipeSkip.visibility = View.INVISIBLE
+                btRecipeStartProcess.visibility = View.VISIBLE
+                btRecipeEdit.visibility = View.VISIBLE
 
-                currentTimeValue= 0L
+                currentTimeValue = 0L
             }
         }
         return view
     }
-    /*  private fun insertDataToDatabase() {
-      val dbCurrentStep = 0
-      val dbStepTime: Int
-      val dbStepTitle: String
 
-      val currentTimer = timerAdapter.timersList[dbCurrentStep]
-      dbStepTime = currentTimer.getTimeInMilliSeconds().toInt() / 1000
-      dbStepTitle = currentTimer.getStepTitle()
+    private fun loadPreset() {
+        presetList?.forEach {
+            val presetStep = Timers()
+            presetStep.setStepTitle(it.first)
+            presetStep.setTimeInMilliSeconds(it.second)
 
-      val recipeStep = recipe(0,dbStepTime,dbStepTitle)
-      mRecipeViewModel.addStep(recipeStep)
-  } */
+            timerAdapter.addTimer(presetStep)
+        }
+    }
 }
 
 fun getTimeString(currentTimeValue: Long): String {
     val minutes = (currentTimeValue / 1000) / 60
     val seconds = (currentTimeValue / 1000) % 60
 
-    if (seconds < 10) {
-    }
-    return "$minutes:0$seconds"
+    if (seconds < 10)
+        return "$minutes:0$seconds"
     return "$minutes:$seconds"
 }
