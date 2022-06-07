@@ -12,11 +12,11 @@ class Timers {
         timeInMilliSeconds = time
     }
 
-    fun setStepTitle(title: String){
+    fun setStepTitle(title: String) {
         stepTitle = title
     }
 
-    fun getStepTitle(): String{
+    fun getStepTitle(): String {
         return stepTitle
     }
 
