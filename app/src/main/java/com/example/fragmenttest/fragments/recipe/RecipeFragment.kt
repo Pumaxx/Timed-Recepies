@@ -1,14 +1,15 @@
 package com.example.fragmenttest.fragments.recipe
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fragmenttest.R
+import com.example.fragmenttest.preset.Preset
 import com.example.timersinwindows.TimerAdapter
 import com.example.timersinwindows.Timers
 import kotlinx.android.synthetic.main.fragment_recipe.*
@@ -20,8 +21,8 @@ import kotlinx.android.synthetic.main.recipe_layout.view.rvTimersContainer
 class recipeFragment : Fragment() {
 
     private lateinit var timerAdapter: TimerAdapter
+    private var presetList: List<Pair<String, Long>>? = null
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,7 +33,12 @@ class recipeFragment : Fragment() {
         view.rvTimersContainer.adapter = timerAdapter
         view.rvTimersContainer.layoutManager = LinearLayoutManager(view.context)
 
-        ciasto()
+        Log.d("id:", Preset.currentId.toString())
+        presetList = Preset.getCurrentPresetList()
+        Log.d("presetList:", presetList.toString())
+        if (presetList != null) {
+            loadPreset()
+        }
 
         val currentStep = 0
         var timerIsFinished = true
@@ -40,7 +46,7 @@ class recipeFragment : Fragment() {
         lateinit var countdownTimer: CountDownTimer
 
         var currentTimeValue = 0L
-        var currentTitleValue = ""
+        var currentTitleValue: String
 
         view.btRecipeAddNewTimer.setOnClickListener {
             val timer = Timers()
@@ -110,8 +116,6 @@ class recipeFragment : Fragment() {
         }
 
         view.btRecipeDone.setOnClickListener {
-            // insertDataToDatabase()
-
             btRecipeAddNewTimer.visibility = View.INVISIBLE
             btRecipeDone.visibility = View.INVISIBLE
             btRecipeStartProcess.visibility = View.VISIBLE
@@ -142,51 +146,15 @@ class recipeFragment : Fragment() {
         return view
     }
 
-    private fun ciasto() {
-        val preSetStepOne = Timers()
-        val preSetStepTwo = Timers()
-        val preSetStepThree = Timers()
-        val preSetStepFour = Timers()
-        val preSetStepFive = Timers()
-        val preSetStepSix = Timers()
-        val preSetStepSeven = Timers()
+    private fun loadPreset() {
+        presetList?.forEach {
+            val presetStep = Timers()
+            presetStep.setStepTitle(it.first)
+            presetStep.setTimeInMilliSeconds(it.second)
 
-        preSetStepOne.setStepTitle("Wsyp do miski 400g mąki")
-        preSetStepOne.setTimeInMilliSeconds(20000)
-        preSetStepTwo.setStepTitle("Wsyp 80g cukru")
-        preSetStepTwo.setTimeInMilliSeconds(15000)
-        preSetStepThree.setStepTitle("Wbij 2 jaja")
-        preSetStepThree.setTimeInMilliSeconds(30000)
-        preSetStepFour.setStepTitle("Wlej 150ml melka")
-        preSetStepFour.setTimeInMilliSeconds(15000)
-        preSetStepFive.setStepTitle("Dokładnie wymieszaj")
-        preSetStepFive.setTimeInMilliSeconds(40000)
-        preSetStepSix.setStepTitle("Wlej do formy")
-        preSetStepSix.setTimeInMilliSeconds(25000)
-        preSetStepSeven.setStepTitle("Piecz w 220° góra-dół")
-        preSetStepSeven.setTimeInMilliSeconds(1800000)
-
-        timerAdapter.addTimer(preSetStepOne)
-        timerAdapter.addTimer(preSetStepTwo)
-        timerAdapter.addTimer(preSetStepThree)
-        timerAdapter.addTimer(preSetStepFour)
-        timerAdapter.addTimer(preSetStepFive)
-        timerAdapter.addTimer(preSetStepSix)
-        timerAdapter.addTimer(preSetStepSeven)
-
+            timerAdapter.addTimer(presetStep)
+        }
     }
-    /*  private fun insertDataToDatabase() {
-        val dbCurrentStep = 0
-        val dbStepTime: Int
-        val dbStepTitle: String
-
-        val currentTimer = timerAdapter.timersList[dbCurrentStep]
-        dbStepTime = currentTimer.getTimeInMilliSeconds().toInt() / 1000
-        dbStepTitle = currentTimer.getStepTitle()
-
-        val recipeStep = recipe(0,dbStepTime,dbStepTitle)
-        mRecipeViewModel.addStep(recipeStep)
-    } */
 }
 
 fun getTimeString(currentTimeValue: Long): String {

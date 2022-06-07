@@ -1,10 +1,12 @@
 package com.example.fragmenttest
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.fragmenttest.preset.Preset
 import kotlinx.android.synthetic.main.menu_element_content.view.*
 
 
@@ -35,6 +37,8 @@ class MenuElementAdapter(
             tvRecipeTitle.text = currentElement.getMenuRecipeTitle()
 
             btGoToRecipe.setOnClickListener {
+                Preset.currentId = currentElement.getId()
+                Log.d("Preset.currentId", Preset.currentId.toString())
                 findNavController().navigate(R.id.action_menuFragment_to_recipeFragment)
             }
 
@@ -73,6 +77,7 @@ class MenuElementAdapter(
     }
 
     fun addMenuElement(newMenuElement: MenuElement) {
+        newMenuElement.elementId = itemCount
         menuElementsList.add(newMenuElement)
         notifyItemInserted(menuElementsList.size - 1)
     }
