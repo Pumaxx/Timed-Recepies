@@ -1,21 +1,26 @@
 package com.example.fragmenttest
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.fragmenttest.preset.Preset
 import kotlinx.android.synthetic.main.menu_element_content.view.*
 
 
-
-class MenuElementAdapter(val menuElementsList: MutableList<MenuElement>
+class MenuElementAdapter(
+    private val menuElementsList: MutableList<MenuElement>
 ) : RecyclerView.Adapter<MenuElementAdapter.MenuElementViewHolder>() {
 
     class MenuElementViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuElementAdapter.MenuElementViewHolder {
-        return MenuElementAdapter.MenuElementViewHolder(
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): MenuElementViewHolder {
+        return MenuElementViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.menu_element_content,
                 parent,
@@ -24,14 +29,16 @@ class MenuElementAdapter(val menuElementsList: MutableList<MenuElement>
         )
     }
 
-    override fun onBindViewHolder(holder: MenuElementAdapter.MenuElementViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MenuElementViewHolder, position: Int) {
 
-        val currentMelement = menuElementsList[position]
+        val currentElement = menuElementsList[position]
 
         holder.itemView.apply {
-            tvRecipeTitle.text = currentMelement.getMenuRecipeTitle()
+            tvRecipeTitle.text = currentElement.getMenuRecipeTitle()
 
             btGoToRecipe.setOnClickListener {
+                Preset.currentId = currentElement.getId()
+                Log.d("Preset.currentId", Preset.currentId.toString())
                 findNavController().navigate(R.id.action_menuFragment_to_recipeFragment)
             }
 
@@ -44,12 +51,12 @@ class MenuElementAdapter(val menuElementsList: MutableList<MenuElement>
             }
 
             btSetMenuElement.setOnClickListener {
-                if(etSetMenuElementTitle.text.toString().isEmpty())
-                    currentMelement.setMenuRecipeTitle("Recipe title")
+                if (etSetMenuElementTitle.text.toString().isEmpty())
+                    currentElement.setMenuRecipeTitle("Recipe title")
                 else
-                    currentMelement.setMenuRecipeTitle(etSetMenuElementTitle.text.toString())
+                    currentElement.setMenuRecipeTitle(etSetMenuElementTitle.text.toString())
 
-                tvRecipeTitle.text = currentMelement.getMenuRecipeTitle()
+                tvRecipeTitle.text = currentElement.getMenuRecipeTitle()
 
                 etSetMenuElementTitle.visibility = View.INVISIBLE
                 btSetMenuElement.visibility = View.INVISIBLE
@@ -59,7 +66,7 @@ class MenuElementAdapter(val menuElementsList: MutableList<MenuElement>
             }
 
             btMenuElementDelete.setOnClickListener {
-                menuElementsList.remove(currentMelement)
+                menuElementsList.remove(currentElement)
                 notifyDataSetChanged()
             }
         }
@@ -70,6 +77,7 @@ class MenuElementAdapter(val menuElementsList: MutableList<MenuElement>
     }
 
     fun addMenuElement(newMenuElement: MenuElement) {
+        newMenuElement.elementId = itemCount
         menuElementsList.add(newMenuElement)
         notifyItemInserted(menuElementsList.size - 1)
     }

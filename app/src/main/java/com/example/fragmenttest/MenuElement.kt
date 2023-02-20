@@ -1,13 +1,18 @@
 package com.example.fragmenttest
 
 class MenuElement {
-    private var menuRecipeTitle = "Recipe title";
+    var elementId: Int = 0
+    private var menuRecipeTitle = "Recipe title"
 
     fun getMenuRecipeTitle(): String {
         return menuRecipeTitle
     }
 
-    fun setMenuRecipeTitle(title: String){
+    fun getId(): Int {
+        return elementId
+    }
+
+    fun setMenuRecipeTitle(title: String) {
         menuRecipeTitle = title
     }
 }
