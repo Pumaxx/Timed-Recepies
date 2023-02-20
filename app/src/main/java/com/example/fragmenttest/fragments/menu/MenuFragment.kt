@@ -15,9 +15,9 @@ class menuFragment : Fragment() {
     private lateinit var menuElementAdapter: MenuElementAdapter
 
     private var presetList = listOf(
-        "Ciasto cioci Jadzi",
-        "Cardio #NieChcemAleMuszem",
-        "Parówki z czajnika",
+        "Grandma's cake",
+        "Favorite workout",
+        "Delicious black coffee",
     )
 
     override fun onCreateView(
